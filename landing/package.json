@@ -1,0 +1,21 @@
+{
+  "name": "landing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "css-build": "node-sass --omit-source-map-url sass/mystyles.scss css/mystyles.css --output-style compressed",
+    "css-watch": "npm run css-build -- --watch",
+    "start": "npm run css-watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bulma": "^0.8.2",
+    "node-sass": "^7.0.0"
+  },
+  "devDependencies": {
+    "bulma": "^0.8.2",
+    "node-sass": "^7.0.0"
+  }
+}
