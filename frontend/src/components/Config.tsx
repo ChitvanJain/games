@@ -104,6 +104,18 @@ class Config extends Component<ConfigProps, ConfigState> {
       hasGameAlreadyStarted: false,
       awards: [
         {
+          nameAward: "Early Five",
+          numAward: "1",
+        },
+        {
+          nameAward: "Bamboo",
+          numAward: "1",
+        },
+        {
+          nameAward: "Vyjayanti Mala",
+          numAward: "1",
+        },
+        {
           nameAward: "First Line",
           numAward: "1",
         },
@@ -116,12 +128,40 @@ class Config extends Component<ConfigProps, ConfigState> {
           numAward: "1",
         },
         {
-          nameAward: "Corners",
+          nameAward: "Fourth Line",
+          numAward: "1",
+        },
+        {
+          nameAward: "Fifth Line",
+          numAward: "1",
+        },
+        {
+          nameAward: "Sixth Line",
+          numAward: "1",
+        },
+        {
+          nameAward: "Big Corner",
+          numAward: "1",
+        },
+        {
+          nameAward: "India",
+          numAward: "1",
+        },
+        {
+          nameAward: "Pakistan",
+          numAward: "1",
+        },
+        {
+          nameAward: "Upper House",
+          numAward: "1",
+        },
+        {
+          nameAward: "Lower House",
           numAward: "1",
         },
         {
           nameAward: "Full House",
-          numAward: "1",
+          numAward: "2",
         },
       ],
       hostDisconnected: false,
@@ -360,7 +400,7 @@ class Config extends Component<ConfigProps, ConfigState> {
 
       mainComponent = (
         <div className="config-container">
-          <Walkthrough playerType="Host" type="config" runWalkthrough={this.state.runWalkthrough}/>
+          <Walkthrough playerType="Host" type="config" runWalkthrough={this.state.runWalkthrough} />
           <Snackbar
             message="Share with players"
             actionText="Copy Link"
@@ -405,7 +445,7 @@ class Config extends Component<ConfigProps, ConfigState> {
       //    Number of Tickets
       mainComponent = (
         <div className="config-container">
-          <Walkthrough playerType="PC" type="config" runWalkthrough={this.state.runWalkthrough}/>
+          <Walkthrough playerType="PC" type="config" runWalkthrough={this.state.runWalkthrough} />
           <h1 className="pc-configuration">Player Setup</h1>
           <hr />
           <form onSubmit={this.handleSubmit}>
@@ -446,9 +486,10 @@ class Config extends Component<ConfigProps, ConfigState> {
           <h3>Would you like to watch tutorial?</h3>
           <div className="modal-buttons">
             <button onClick={() => {
-              this.setState({runWalkthrough: true, watchTutorialModal: false})
-              console.log("clicked yes");}
-              }>Yes</button>
+              this.setState({ runWalkthrough: true, watchTutorialModal: false })
+              console.log("clicked yes");
+            }
+            }>Yes</button>
             <button
               onClick={() => {
                 console.log("clicked No");
