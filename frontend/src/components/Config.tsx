@@ -99,7 +99,7 @@ class Config extends Component<ConfigProps, ConfigState> {
       PcsStatus: [],
       isModalOpen: false,
       isToastOpen: false,
-      watchTutorialModal: true,
+      watchTutorialModal: false,
       runWalkthrough: false,
       hasGameAlreadyStarted: false,
       awards: [
@@ -149,6 +149,10 @@ class Config extends Component<ConfigProps, ConfigState> {
         },
         {
           nameAward: "Pakistan",
+          numAward: "1",
+        },
+        {
+          nameAward: "Temperature",
           numAward: "1",
         },
         {
