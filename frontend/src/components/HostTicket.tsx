@@ -11,6 +11,9 @@ interface HostTicketProps {
 
 function HostTicket(props: HostTicketProps) {
   let handleResultCall = (result: string) => {
+    if (result === "Bogey!") {
+      props.socket.emit("bogey"); // Emit bogey event to all clients
+    }
     props.socket.emit("resultsFromHost", {
       result: result,
       callWinType: props.callWinObj.callWinType,
