@@ -30,8 +30,29 @@ class NewNumber extends Component<NewNumberProps, NewNumberState> {
         this.setState({ newNumber: newNumberObj.newNumber });
         // Speak the new number aloud (for mobile accessibility)
         if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-          const utter = new window.SpeechSynthesisUtterance(newNumberObj.newNumber.toString());
+          let number = newNumberObj.newNumber;
+          let utterText = '';
+          if (number < 10) {
+            utterText = `Single number ${number}`;
+          } else if (number < 100) {
+            const digits = number.toString().split("").join(" ");
+            utterText = `${digits} ${number}`;
+          } else {
+            const digits = number.toString().split("").join(" ");
+            utterText = `${digits} ${number}`;
+          }
+          const utter = new window.SpeechSynthesisUtterance(utterText);
           utter.lang = 'en-US';
+          // Try to select a female voice
+          const voices = window.speechSynthesis.getVoices();
+          const femaleVoice = voices.find(v => v.name.toLowerCase().includes('female')) || voices.find(v => v.name.toLowerCase().includes('woman')) || voices.find(v => v.lang.startsWith('en') && v.name && !v.name.toLowerCase().includes('male'));
+          if (femaleVoice) {
+            utter.voice = femaleVoice;
+          } else {
+            // fallback: pick first en-US voice that is not male
+            const fallbackVoice = voices.find(v => v.lang === 'en-US' && v.name && !v.name.toLowerCase().includes('male'));
+            if (fallbackVoice) utter.voice = fallbackVoice;
+          }
           window.speechSynthesis.cancel(); // Stop any previous speech
           window.speechSynthesis.speak(utter);
         }
