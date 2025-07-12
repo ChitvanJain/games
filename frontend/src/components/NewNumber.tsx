@@ -8,6 +8,7 @@ interface NewNumberProps {
 
 interface NewNumberState {
   newNumber: number;
+  useHindi: boolean;
 }
 
 export interface newNumberObj_t {
@@ -18,7 +19,7 @@ class NewNumber extends Component<NewNumberProps, NewNumberState> {
   goneNumbers: Array<number>;
   constructor(props: NewNumberProps) {
     super(props);
-    this.state = { newNumber: 0 };
+    this.state = { newNumber: 0, useHindi: false };
     this.goneNumbers = [];
   }
 
@@ -30,30 +31,22 @@ class NewNumber extends Component<NewNumberProps, NewNumberState> {
         this.setState({ newNumber: newNumberObj.newNumber });
         // Speak the new number aloud (for mobile accessibility)
         if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-          let number = newNumberObj.newNumber;
+          const number = newNumberObj.newNumber;
           let utterText = '';
-          if (number < 10) {
-            utterText = `Single number ${number}`;
-          } else if (number < 100) {
-            const digits = number.toString().split("").join(" ");
-            utterText = `${digits} ${number}`;
-          } else {
-            const digits = number.toString().split("").join(" ");
-            utterText = `${digits} ${number}`;
-          }
+          const digitWords = (n: number) => n.toString().split('').map((d: string) => ['zero','one','two','three','four','five','six','seven','eight','nine'][+d]).join(' ');
+          if (number < 10) utterText = `Single number ${digitWords(number)}`;
+          else if (number < 100) utterText = `${digitWords(number)}, ${number}`;
+          else utterText = `${digitWords(number)}, ${number}`;
           const utter = new window.SpeechSynthesisUtterance(utterText);
-          utter.lang = 'en-US';
-          // Try to select a female voice
+          utter.lang = this.state.useHindi ? 'hi-IN' : 'en-IN';
           const voices = window.speechSynthesis.getVoices();
           const femaleVoice = voices.find(v => v.name.toLowerCase().includes('female')) || voices.find(v => v.name.toLowerCase().includes('woman')) || voices.find(v => v.lang.startsWith('en') && v.name && !v.name.toLowerCase().includes('male'));
-          if (femaleVoice) {
-            utter.voice = femaleVoice;
-          } else {
-            // fallback: pick first en-US voice that is not male
+          if (femaleVoice) utter.voice = femaleVoice;
+          else {
             const fallbackVoice = voices.find(v => v.lang === 'en-US' && v.name && !v.name.toLowerCase().includes('male'));
             if (fallbackVoice) utter.voice = fallbackVoice;
           }
-          window.speechSynthesis.cancel(); // Stop any previous speech
+          window.speechSynthesis.cancel();
           window.speechSynthesis.speak(utter);
         }
       }
@@ -66,9 +59,16 @@ class NewNumber extends Component<NewNumberProps, NewNumberState> {
     return Math.random() * 10000;
   };
 
+  handleToggleLanguage = () => {
+    this.setState((prevState: NewNumberState & { useHindi: boolean }) => ({ useHindi: !prevState.useHindi }));
+  };
+
   render() {
     let newNumberComponent = (
       <>
+        <button onClick={this.handleToggleLanguage} style={{marginBottom:8}}>
+          {this.state.useHindi ? 'Switch to English Voice' : 'Switch to Hindi Voice'}
+        </button>
         <p className="new-number-player">New Number </p>
         <div>
           <div
