@@ -8,7 +8,6 @@ interface NewNumberProps {
 
 interface NewNumberState {
   newNumber: number;
-  useHindi: boolean;
 }
 
 export interface newNumberObj_t {
@@ -19,7 +18,7 @@ class NewNumber extends Component<NewNumberProps, NewNumberState> {
   goneNumbers: Array<number>;
   constructor(props: NewNumberProps) {
     super(props);
-    this.state = { newNumber: 0, useHindi: false };
+    this.state = { newNumber: 0 };
     this.goneNumbers = [];
   }
 
@@ -38,7 +37,8 @@ class NewNumber extends Component<NewNumberProps, NewNumberState> {
           else if (number < 100) utterText = `${digitWords(number)}, ${number}`;
           else utterText = `${digitWords(number)}, ${number}`;
           const utter = new window.SpeechSynthesisUtterance(utterText);
-          utter.lang = this.state.useHindi ? 'hi-IN' : 'en-IN';
+          utter.lang = 'en-IN';
+          utter.rate = 0.8; // Set slower speech rate (default is 1)
           const voices = window.speechSynthesis.getVoices();
           const femaleVoice = voices.find(v => v.name.toLowerCase().includes('female')) || voices.find(v => v.name.toLowerCase().includes('woman')) || voices.find(v => v.lang.startsWith('en') && v.name && !v.name.toLowerCase().includes('male'));
           if (femaleVoice) utter.voice = femaleVoice;
@@ -59,16 +59,9 @@ class NewNumber extends Component<NewNumberProps, NewNumberState> {
     return Math.random() * 10000;
   };
 
-  handleToggleLanguage = () => {
-    this.setState((prevState: NewNumberState & { useHindi: boolean }) => ({ useHindi: !prevState.useHindi }));
-  };
-
   render() {
     let newNumberComponent = (
       <>
-        <button onClick={this.handleToggleLanguage} style={{marginBottom:8}}>
-          {this.state.useHindi ? 'Switch to English Voice' : 'Switch to Hindi Voice'}
-        </button>
         <p className="new-number-player">New Number </p>
         <div>
           <div
