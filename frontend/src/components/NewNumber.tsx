@@ -28,6 +28,13 @@ class NewNumber extends Component<NewNumberProps, NewNumberState> {
       (newNumberObj: newNumberObj_t) => {
         this.goneNumbers.push(newNumberObj.newNumber);
         this.setState({ newNumber: newNumberObj.newNumber });
+        // Speak the new number aloud (for mobile accessibility)
+        if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+          const utter = new window.SpeechSynthesisUtterance(newNumberObj.newNumber.toString());
+          utter.lang = 'en-US';
+          window.speechSynthesis.cancel(); // Stop any previous speech
+          window.speechSynthesis.speak(utter);
+        }
       }
     );
   }
