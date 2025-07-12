@@ -163,6 +163,19 @@ io.on("connection", (socket) => {
     }
   });
 
+  // Play bogey audio when 'bogey' event is received
+  socket.on("bogey", () => {
+    const user = getCurrentUser(socket.id);
+
+    // event for notifying PCs that new number was called
+    if (user) {
+      io.to(user.room).emit("bogey");
+      console.log("bogey in room:", user.room);
+    } else {
+      console.log("ISSUE: bogey coming from null user");
+    }
+  });
+
   // deal with disconnects here later
   // CASES:
   //  - dealing with host's disconnection

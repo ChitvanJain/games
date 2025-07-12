@@ -51,6 +51,11 @@ class NewNumber extends Component<NewNumberProps, NewNumberState> {
         }
       }
     );
+    // Play bogey audio when 'bogey' event is received
+    this.props.socket.on("bogey", () => {
+      const audio = new window.Audio("/bogey.mp3"); // Place bogey.mp3 in public/
+      audio.play();
+    });
   }
 
   // For generating random key for every render so that dom is manipulated every
